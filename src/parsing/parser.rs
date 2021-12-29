@@ -1820,3 +1820,42 @@ contexts:
         states
     }
 }
+
+#[cfg(test)]
+mod sourcegraph_tests {
+    use std::time::Duration;
+    use std::thread;
+    use std::sync::mpsc;
+
+    use crate::parsing::{ParseState, SyntaxSet};
+
+    fn panic_after(duration: Duration, f: impl FnOnce() -> () + 'static + Send) {
+      let (done_tx, done_rx) = mpsc::channel();
+      let handle = thread::spawn(move || {
+          f();
+          done_tx.send(()).expect("failed to send completion signal");
+      });
+
+      match done_rx.recv_timeout(duration) {
+          Ok(_) => handle.join().expect("failed on join thread handle"),
+          Err(_) => panic!("test took longer than {:?}", duration),
+      }
+    }
+
+    #[test]
+    fn javascript_hang() {
+      panic_after(Duration::from_secs(1), || {
+              let js_src = "\
+a = 1
+  /* oh no */
+      ";
+        let syntax_set = SyntaxSet::load_defaults_newlines();
+        let extension = "js";
+        let syntax_ref = syntax_set.find_syntax_by_extension(extension).expect("failed to find syntax definition for JS");
+        let mut state = ParseState::new(syntax_ref);
+        for line in js_src.lines() {
+            let _ = state.parse_line(line, &syntax_set);
+        }
+      });
+    }
+}
