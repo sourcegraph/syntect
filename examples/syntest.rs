@@ -188,7 +188,7 @@ fn test_file(
         return Err(SyntaxTestHeaderError::MalformedHeader);
     }
 
-    line = line.replace("\r", "");
+    line = line.replace('\r', "");
 
     // parse the syntax test header in the first line of the file
     let header_line = line.clone();
@@ -307,7 +307,7 @@ fn test_file(
         if reader.read_line(&mut line).unwrap() == 0 {
             break;
         }
-        line = line.replace("\r", "");
+        line = line.replace('\r', "");
     }
     let res = if assertion_failures > 0 {
         Ok(SyntaxTestFileResult::FailedAssertions(
