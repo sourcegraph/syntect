@@ -631,7 +631,7 @@ impl ParseState {
             let mut proto_ids = if i == 0 {
                 // it is only necessary to preserve the old prototypes
                 // at the first stack frame pushed
-                old_proto_ids.clone().unwrap_or_else(Vec::new)
+                old_proto_ids.clone().unwrap_or_default()
             } else {
                 Vec::new()
             };
@@ -1829,7 +1829,7 @@ mod sourcegraph_tests {
 
     use crate::parsing::{ParseState, SyntaxSet};
 
-    fn panic_after(duration: Duration, f: impl FnOnce() -> () + 'static + Send) {
+    fn panic_after(duration: Duration, f: impl FnOnce() + 'static + Send) {
       let (done_tx, done_rx) = mpsc::channel();
       let handle = thread::spawn(move || {
           f();

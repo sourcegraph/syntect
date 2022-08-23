@@ -10,6 +10,7 @@ license = "MIT"
 version = "4.7.0" # remember to update html_root_url
 authors = ["Tristan Hume <tristan@thume.ca>"]
 edition = "2018"
+rust-version = "1.60"
 exclude = [
     "testdata/*",
     "/scripts/*",

@@ -8,7 +8,7 @@ on:
     branches: [ main ]
 
 env:
-  MIN_SUPPORTED_RUST_VERSION: "1.51"
+  MIN_SUPPORTED_RUST_VERSION: "1.60"
   CARGO_TERM_COLOR: always
 
 jobs:
