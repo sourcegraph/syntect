@@ -13,17 +13,11 @@ cargo run --release --example synhtml -- path/to/file.ext
 
 Combine with [`entr`](https://github.com/eradman/entr) if there is no hang.
 
-## Check both regex engines
+## Update generated files
 
-When reducing a bug, it may be helpful to check
-if it reproduces both with Oniguruma and fancy-regex.
-This can be done by tweaking `Cargo.toml`.
-
-```
-default = ["default-onig"]
-# change to
-default = ["default-fancy"]
-```
+If you update the grammars under `testdata/Packages`,
+make sure to run `make assets` in the root of this repo
+to regenerate the `packdump` files.
 
 ## Viewing stacks for hangs
 
