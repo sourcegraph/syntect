@@ -67,7 +67,6 @@ jobs:
       run: |
         make assets
         make syntest
-        make syntest-fancy
     - name: Docs
       run: |
         cargo doc
